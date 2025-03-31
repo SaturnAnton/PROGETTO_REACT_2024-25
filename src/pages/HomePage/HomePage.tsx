@@ -77,9 +77,9 @@ const CountSleep: React.FC = () => {
           <li>LIGHT: {formatTime(counts.light)}</li>
           <li>DEEP: {formatTime(counts.deep)}</li>
         </ul>
-        <h2 className="text-lg font-bold mt-4">Total Sleep Time:</h2>
+        <h2 className="total">Total Sleep Time:</h2>
         <p>{formatTime(totalMinutes)}</p>
-        <h2 className="text-lg font-bold mt-4">Sleep Time Rate:</h2>
+        <h2 className="ratio">Sleep Time Rate:</h2>
         <p>{(((totalMinutes)-counts.awake)*100/480)*0.5 + (((counts.deep)+(counts.rem))*100/totalMinutes)*0.5 - ((counts.awake)*100/totalMinutes)}</p>
       </div>
     </div>
