@@ -14,3 +14,19 @@
     list-style-type: none; 
     padding: 0;
   }
+
+  .hypnogram {
+    width: 85%;
+    height: 300px;
+    margin: 20px auto;
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .hypnogram h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
