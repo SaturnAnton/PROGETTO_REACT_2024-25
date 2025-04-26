@@ -1,32 +1,54 @@
 .title{
-    color: antiquewhite;
-    text-align: center; 
-    font-family: 'Times New Roman', Times, serif;
-  }
-  
-  .pie{
-    width: 20%;
-    margin-left: 20%;
-    margin-top: 30px;
-  }
-  
-  .list{
-    list-style-type: none; 
-    padding: 0;
-  }
+  color: antiquewhite;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center; 
+  margin-top: 10px;
+}
 
-  .hypnogram {
-    width: 85%;
-    height: 300px;
-    margin: 20px auto;
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+.title2{
+  color: antiquewhite;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center; 
+  margin-top: 80px;
+}
   
-  .hypnogram h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+.pie-chart{
+  width: 10%;
+  margin-left: 65%;
+  margin-top: -13%;
+}
+
+.value{
+  color: antiquewhite;
+  font-family: 'Times New Roman', Times, serif;
+  display:flex;
+  flex-direction: column;
+  list-style-type: none;
+  font-size: large;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 400px;
+  width: 100%;
+  padding: 15px;
+  transform: translateX(-60%); 
+}
+
+.hypnogram {
+  color: antiquewhite;
+  font-family: 'Times New Roman', Times, serif;
+  width: 90%;
+  height: 300px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+  
+.hypnogram h2 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  text-align: center;
+}

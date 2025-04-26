@@ -192,6 +192,7 @@ const CountSleep: React.FC = () => {
             return reversedMapping[Number(value)] || "";
           },
           color:'white',
+          padding: 40,
         },
         min: 1, 
         max: 4, 
@@ -233,29 +234,38 @@ const CountSleep: React.FC = () => {
   return (
     <div>
       <h1 className="title">MONITORAGGIO DEL SONNO</h1>
-      <div className="pie">
+      <div className="value">
+          <li>
+            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#FF6600", marginRight: "5px" }}></span>
+            AWAKE: {formatTime(counts.awake)}
+          </li>
+          <li>
+            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#54D1F1", marginRight: "5px" }}></span>
+            REM: {formatTime(counts.rem)}
+          </li>
+          <li>
+            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#8799FF", marginRight: "5px" }}></span>
+            LIGHT: {formatTime(counts.light)}
+          </li>
+          <li>
+            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#2020FF", marginRight: "5px" }}></span>
+            DEEP: {formatTime(counts.deep)}
+          </li>
+          <li>TEMPO DI SONNO TOTALE: {formatTime(totalMinutes)} </li>  
+          <li>PUNTEGGIO DEL SONNO: {calculateSleepRate().toFixed(2)}</li>
+      </div>
+      <div className="pie-chart">
         <PieChart data={pieChartData} lineWidth={15} startAngle={270} paddingAngle={3} />
       </div>
-      <div>  
+      <h2 className="title2">IPNOGRAMMA</h2>
       <div className="hypnogram">
-        <h2>Hypnogram</h2>
         {hypnogramData && <Line data={hypnogramData} options={hypnogramOptions} />}
         {!hypnogramData && <p>Dati dell'ipnogramma non disponibili.</p>}
       </div>
-        <ul className="list">
-          <li>AWAKE: {formatTime(counts.awake)}</li>
-          <li>REM: {formatTime(counts.rem)}</li>
-          <li>LIGHT: {formatTime(counts.light)}</li>
-          <li>DEEP: {formatTime(counts.deep)}</li>
-        </ul>
-        <h2 className="total">Total Sleep Time:</h2>
-        <p>{formatTime(totalMinutes)}</p>
-        <h2 className="ratio">Sleep Time Rate:</h2>
-        <p>{calculateSleepRate().toFixed(2)}</p>
-      </div>
-
-      
+      <hr style={{ border: "1px solid #ccc", margin: "70px 0" }} />
+      <h1 className="title">NON HAI SONNO OPPURE DORMI MALE?</h1>
     </div>
+    
   );
 };
 
