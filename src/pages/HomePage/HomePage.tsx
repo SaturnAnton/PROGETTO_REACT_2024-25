@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
 import { PieChart } from "react-minimal-pie-chart";
 import { Line } from "react-chartjs-2";
+import { Link } from "react-router-dom";
 import {
   ChartOptions,
   Chart as ChartJS,
@@ -178,6 +179,22 @@ const CountSleep: React.FC = () => {
     }
   }
 
+  const calculatePhysicalRecovery = () => {
+    if (totalMinutes === 0) return 0;
+    return (counts.deep / totalMinutes) * 100;
+  };
+
+  const calculateMentalRecovery = () => {
+    if (totalMinutes === 0) return 0;
+    return (counts.rem / totalMinutes) * 100;
+  };
+
+  const calculateCycleQuality = () => {
+    const sleepTime = totalMinutes - counts.awake;
+    if (sleepTime <= 0) return 0;
+    return ((counts.deep + counts.light) / (sleepTime - counts.awake)) * 100;
+  };
+
   const pieChartData = [
     { title: "Awake", value: counts.awake, color: "#FF6600" },
     { title: "REM", value: counts.rem, color: "#54D1F1" },
@@ -269,9 +286,26 @@ const CountSleep: React.FC = () => {
           <li>TEMPO DI SONNO TOTALE: {formatTime(totalMinutes)} </li>  
           <li>PUNTEGGIO DEL SONNO: {calculateSleepRate().toFixed(2)}</li>
       </div>
+
       <div className="pie-chart">
         <PieChart data={pieChartData} lineWidth={15} startAngle={270} paddingAngle={3} />
       </div>
+
+      <div className="sleep-details">
+        <Link to='\sleepdet'>
+          <li className="title4">DETTAGLI DEL SONNO</li>
+          </Link>
+            <li>
+              Recupero fisico: {calculatePhysicalRecovery() > 18 && calculatePhysicalRecovery() < 23 ? "Ok" : "Insufficiente"}
+            </li>
+            <li>
+              Recupero mentale: {calculateMentalRecovery().toFixed(2)}%
+            </li>
+            <li>
+              Qualità dei cicli: {calculateCycleQuality().toFixed(2)}%
+            </li>
+        </div>
+
        <div className="comment">
         <p className="title3">COMMENTO PUNTEGGIO DEL SONNO</p>
         <p>{value()}</p>
