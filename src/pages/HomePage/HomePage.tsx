@@ -172,7 +172,7 @@ const CountSleep: React.FC = () => {
       return "Qualità del sonno buona ma migliorabile. Prova a guardare i consigli qui sotto per migliorare la qualità del sonno";
     }
     if(calculateSleepRate()<=59 && calculateSleepRate()>=40){
-      return "Sonno insufficiente, con margini di miglioramento significativi.Guarda i consigli qui sotto per migliorare il tuo sonno.";
+      return "Sonno insufficiente, con margini di miglioramento significativi. Guarda i consigli qui sotto per migliorare il tuo sonno.";
     }
     if(calculateSleepRate()<=39 && calculateSleepRate()>=0){
       return "Sonno scarso,è necessario un intervento per migliorare la qualità. Usa i consigli qui sotto per migliorare il tuo sonno.";
