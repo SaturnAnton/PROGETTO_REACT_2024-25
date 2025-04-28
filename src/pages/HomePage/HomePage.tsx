@@ -163,6 +163,21 @@ const CountSleep: React.FC = () => {
     return restBonus - awakePenalty;
   };
 
+  const value = () => {
+    if(calculateSleepRate()<=100 && calculateSleepRate()>=80){
+      return "Ottima qualità del sonno";
+    }
+    if(calculateSleepRate()<=79 && calculateSleepRate()>=60){
+      return "Qualità del sonno buona ma migliorabile. Prova a guardare i consigli qui sotto per migliorare la qualità del sonno";
+    }
+    if(calculateSleepRate()<=59 && calculateSleepRate()>=40){
+      return "Sonno insufficiente, con margini di miglioramento significativi.Guarda i consigli qui sotto per migliorare il tuo sonno.";
+    }
+    if(calculateSleepRate()<=39 && calculateSleepRate()>=0){
+      return "Sonno scarso,è necessario un intervento per migliorare la qualità. Usa i consigli qui sotto per migliorare il tuo sonno.";
+    }
+  }
+
   const pieChartData = [
     { title: "Awake", value: counts.awake, color: "#FF6600" },
     { title: "REM", value: counts.rem, color: "#54D1F1" },
@@ -257,6 +272,10 @@ const CountSleep: React.FC = () => {
       <div className="pie-chart">
         <PieChart data={pieChartData} lineWidth={15} startAngle={270} paddingAngle={3} />
       </div>
+       <div className="comment">
+        <p className="title3">COMMENTO PUNTEGGIO DEL SONNO</p>
+        <p>{value()}</p>
+        </div>
       <h2 className="title2">IPNOGRAMMA</h2>
       <div className="hypnogram">
         {hypnogramData && <Line data={hypnogramData} options={hypnogramOptions} />}

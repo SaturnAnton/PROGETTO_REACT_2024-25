@@ -52,3 +52,20 @@
   margin-bottom: 5px;
   text-align: center;
 }
+
+.comment{
+  color: antiquewhite;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+  font-size: larger;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 5% auto;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom:-30px;
+}
+
+.title3{
+  font-weight: bolder;
+}
