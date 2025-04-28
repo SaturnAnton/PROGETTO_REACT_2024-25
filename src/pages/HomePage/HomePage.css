@@ -91,3 +91,12 @@
 .title4{
   font-weight: bolder;
 }
+
+.no-det{
+  text-decoration: none;
+  color: inherit;
+}
+
+.no-det:visited{
+  color: inherit;
+}

@@ -292,7 +292,7 @@ const CountSleep: React.FC = () => {
       </div>
 
       <div className="sleep-details">
-        <Link to='\sleepdet'>
+        <Link to='/sleepdet' className="no-det">
           <li className="title4">DETTAGLI DEL SONNO</li>
           </Link>
             <li>
