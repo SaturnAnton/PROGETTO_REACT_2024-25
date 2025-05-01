@@ -310,16 +310,13 @@ const CountSleep: React.FC = () => {
           <li className="title4">DETTAGLI DEL SONNO</li>
           </Link>
             <li>
-              - Recupero fisico:<br />
-                      {calculatePhysicalRecovery()}
+              Recupero fisico: {calculatePhysicalRecovery()}
             </li>
             <li>
-              - Recupero mentale:<br />
-                      {calculateMentalRecovery()}
+              Recupero mentale: {calculateMentalRecovery()}
             </li>
             <li>
-              - Riposo:<br />
-                      {calculateRestQuality()}
+              Riposo: {calculateRestQuality()}
             </li>
         </div>
 
