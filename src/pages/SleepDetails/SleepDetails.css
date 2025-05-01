@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+}
+
+.SDTitle1{
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #2020FF;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.SDTitle2{
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #54D1F1;
+    font-family: 'Times New Roman', Times, serif;
+}
+.SDTitle3{
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #FF6600;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.DescriptionBox {
+    width: 50%;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    
+}

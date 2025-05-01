@@ -180,19 +180,33 @@ const CountSleep: React.FC = () => {
   }
 
   const calculatePhysicalRecovery = () => {
-    if (totalMinutes === 0) return 0;
-    return (counts.deep / totalMinutes) * 100;
+    const Physical = (counts.deep / totalMinutes) * 100;
+
+    if(Physical >=10 && Physical <= 12) return "Ottimo";
+    if(Physical >=9 && Physical <= 13) return "Buono";
+    if(Physical >=8 && Physical <= 14) return "Sufficiente";
+    if(Physical >=7 && Physical <= 15) return "Scarso";
+    return "Insufficiente";
   };
 
   const calculateMentalRecovery = () => {
-    if (totalMinutes === 0) return 0;
-    return (counts.rem / totalMinutes) * 100;
+    const Mental = (counts.rem / totalMinutes) * 100;
+
+    if(Mental >=19 && Mental <= 27) return "Ottimo";
+    if(Mental >=18 && Mental <= 28) return "Buono";
+    if(Mental >=17 && Mental <= 29) return "Sufficiente";
+    if(Mental >=16 && Mental <= 30) return "Scarso";
+    return "Insufficiente";
   };
 
-  const calculateCycleQuality = () => {
-    const sleepTime = totalMinutes - counts.awake;
-    if (sleepTime <= 0) return 0;
-    return ((counts.deep + counts.light) / (sleepTime - counts.awake)) * 100;
+  const calculateRestQuality = () => {
+    const Rest = ((counts.deep +  counts.light + counts.rem)/ totalMinutes) * 100;
+
+    if(Rest >=90) return "Ottimo";
+    if(Rest >=85) return "Buono";
+    if(Rest >=80) return "Sufficiente";
+    if(Rest >=75) return "Scarso";
+    return "Insufficiente";
   };
 
   const pieChartData = [
@@ -296,13 +310,16 @@ const CountSleep: React.FC = () => {
           <li className="title4">DETTAGLI DEL SONNO</li>
           </Link>
             <li>
-              Recupero fisico: {calculatePhysicalRecovery() > 18 && calculatePhysicalRecovery() < 23 ? "Ok" : "Insufficiente"}
+              - Recupero fisico:<br />
+                      {calculatePhysicalRecovery()}
             </li>
             <li>
-              Recupero mentale: {calculateMentalRecovery().toFixed(2)}%
+              - Recupero mentale:<br />
+                      {calculateMentalRecovery()}
             </li>
             <li>
-              Qualità dei cicli: {calculateCycleQuality().toFixed(2)}%
+              - Riposo:<br />
+                      {calculateRestQuality()}
             </li>
         </div>
 
@@ -321,5 +338,4 @@ const CountSleep: React.FC = () => {
     
   );
 };
-
-export default CountSleep;
+export default CountSleep
