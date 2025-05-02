@@ -319,16 +319,13 @@ const CountSleep: React.FC = () => {
             <li className="title4">DETTAGLI DEL SONNO</li>
             </Link>
               <li>
-                - Recupero fisico:<br />
-                        {calculatePhysicalRecovery()}
+                Recupero fisico: {calculatePhysicalRecovery()}
               </li>
               <li>
-                - Recupero mentale:<br />
-                        {calculateMentalRecovery()}
+                Recupero mentale: {calculateMentalRecovery()}
               </li>
               <li>
-                - Riposo:<br />
-                        {calculateRestQuality()}
+                Riposo: {calculateRestQuality()}
               </li>
           </div>
 
@@ -344,9 +341,7 @@ const CountSleep: React.FC = () => {
 
         <div>
         <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
-        <Link to='/tips' className="no-det">
-          <h1 className="title4">CONSIGLI PER DORMIRE </h1>
-        </Link>
+        <h1 className="title5">CONSIGLI PER DORMIRE MEGLIO</h1>
         </div>
       </div>
       
@@ -418,6 +413,9 @@ const CountSleep: React.FC = () => {
           ></iframe>
         </div>)
       }
+      <Link to='/tips' className="no-det">
+          <h2 className="title4">ALTRI CONSIGLI PER DORMIRE </h2>
+        </Link>
     </div>
   );
 };

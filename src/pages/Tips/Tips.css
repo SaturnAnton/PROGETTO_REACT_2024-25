@@ -1,10 +1,10 @@
-.container {
+.container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 100vh;
+    height: 100%;
 }
 
 .TipsTitle1 {
@@ -38,7 +38,7 @@
 .TipsTitle5 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #6A8D3F; /* Verde mimetico */
+    color: #6A8D3F;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -52,7 +52,7 @@
 .DescriptionBoxMilitary {
     width: 50%;
     padding: 20px;
-    border: 2px solid #6A8D3F; /* Bordo verde mimetico */
+    border: 2px solid #6A8D3F;
     border-radius: 10px;
     font-size: 18px;
     font-family: 'Times New Roman', Times, serif;

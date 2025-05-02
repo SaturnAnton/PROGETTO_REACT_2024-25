@@ -1,9 +1,15 @@
 import "./Tips.css"
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function Tips(){
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
-        <div className="container">
+        <div className="container2">
             <h1 className="TipsTitle1">- Illuminamento -</h1>
             <div className="DescriptionBox">
                 A partire da 2 ore prima di andare a letto, riduci gradualmente la luce
