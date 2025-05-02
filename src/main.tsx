@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './pages/HomePage/HomePage.tsx'
 import Login from './pages/Login/Login.tsx'
 import Signup from './pages/Signup/Signup.tsx'
+import Tips from './pages/Tips/Tips.tsx'
 import './index.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import AuthRoute from './AuthRoute.tsx'
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/sleepdet" element={<SleepDetails />} />
+        <Route path="/tips" element={<Tips />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

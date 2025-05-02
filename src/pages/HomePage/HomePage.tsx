@@ -279,60 +279,146 @@ const CountSleep: React.FC = () => {
   
   return (
     <div>
-      <h1 className="title">MONITORAGGIO DEL SONNO</h1>
-      <div className="value">
-          <li>
-            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#FF6600", marginRight: "5px" }}></span>
-            AWAKE: {formatTime(counts.awake)}
-          </li>
-          <li>
-            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#54D1F1", marginRight: "5px" }}></span>
-            REM: {formatTime(counts.rem)}
-          </li>
-          <li>
-            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#8799FF", marginRight: "5px" }}></span>
-            LIGHT: {formatTime(counts.light)}
-          </li>
-          <li>
-            <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#2020FF", marginRight: "5px" }}></span>
-            DEEP: {formatTime(counts.deep)}
-          </li>
-          <li>TEMPO DI SONNO TOTALE: {formatTime(totalMinutes)} </li>  
-          <li>PUNTEGGIO DEL SONNO: {calculateSleepRate().toFixed(2)}</li>
-      </div>
-
-      <div className="pie-chart">
-        <PieChart data={pieChartData} lineWidth={15} startAngle={270} paddingAngle={3} />
-      </div>
-
-      <div className="sleep-details">
-        <Link to='/sleepdet' className="no-det">
-          <li className="title4">DETTAGLI DEL SONNO</li>
-          </Link>
-            <li>
-              Recupero fisico: {calculatePhysicalRecovery()}
-            </li>
-            <li>
-              Recupero mentale: {calculateMentalRecovery()}
-            </li>
-            <li>
-              Riposo: {calculateRestQuality()}
-            </li>
-        </div>
-
-       <div className="comment">
-        <p className="title3">COMMENTO PUNTEGGIO DEL SONNO</p>
-        <p>{value()}</p>
-        </div>
-      <h2 className="title2">IPNOGRAMMA</h2>
-      <div className="hypnogram">
-        {hypnogramData && <Line data={hypnogramData} options={hypnogramOptions} />}
-        {!hypnogramData && <p>Dati dell'ipnogramma non disponibili.</p>}
-      </div>
-      <hr style={{ border: "1px solid #ccc", margin: "70px 0" }} />
-      <h1 className="title">NON HAI SONNO OPPURE DORMI MALE?</h1>
+      <div>
+      {/* Musica di sottofondo */}
+      <audio id="spotifydown.com - As we are (Seungmin)" autoPlay loop>
+        <source src="\public\spotifydown.com - As we are (Seungmin).mp3" type="audio/mp3" />
+        Il tuo browser non supporta l'elemento audio.
+      </audio>
     </div>
-    
+
+      <div>
+        <h1 className="title">MONITORAGGIO DEL SONNO</h1>
+        <div className="value">
+            <li>
+              <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#FF6600", marginRight: "5px" }}></span>
+              AWAKE: {formatTime(counts.awake)}
+            </li>
+            <li>
+              <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#54D1F1", marginRight: "5px" }}></span>
+              REM: {formatTime(counts.rem)}
+            </li>
+            <li>
+              <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#8799FF", marginRight: "5px" }}></span>
+              LIGHT: {formatTime(counts.light)}
+            </li>
+            <li>
+              <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#2020FF", marginRight: "5px" }}></span>
+              DEEP: {formatTime(counts.deep)}
+            </li>
+            <li>TEMPO DI SONNO TOTALE: {formatTime(totalMinutes)} </li>  
+            <li>PUNTEGGIO DEL SONNO: {calculateSleepRate().toFixed(2)}</li>
+        </div>
+
+        <div className="pie-chart">
+          <PieChart data={pieChartData} lineWidth={15} startAngle={270} paddingAngle={3} />
+        </div>
+
+        <div className="sleep-details">
+          <Link to='/sleepdet' className="no-det">
+            <li className="title4">DETTAGLI DEL SONNO</li>
+            </Link>
+              <li>
+                - Recupero fisico:<br />
+                        {calculatePhysicalRecovery()}
+              </li>
+              <li>
+                - Recupero mentale:<br />
+                        {calculateMentalRecovery()}
+              </li>
+              <li>
+                - Riposo:<br />
+                        {calculateRestQuality()}
+              </li>
+          </div>
+
+        <div className="comment">
+          <p className="title3">COMMENTO PUNTEGGIO DEL SONNO</p>
+          <p>{value()}</p>
+          </div>
+        <h2 className="title2">IPNOGRAMMA</h2>
+        <div className="hypnogram">
+          {hypnogramData && <Line data={hypnogramData} options={hypnogramOptions} />}
+          {!hypnogramData && <p>Dati dell'ipnogramma non disponibili.</p>}
+        </div>
+
+        <div>
+        <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
+        <Link to='/tips' className="no-det">
+          <h1 className="title4">CONSIGLI PER DORMIRE </h1>
+        </Link>
+        </div>
+      </div>
+      
+      {calculatePhysicalRecovery() !== "Ottimo" && (
+        <div>
+          <h2 className="titleFisico">- Recupero Fisico -</h2>
+
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/1qVJCyyDLUk"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/Fr8NdBu_G_Y"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/pNzKpolpS78"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+
+        </div>)
+      }
+
+      {calculateMentalRecovery() !== "Buono" && (
+        <div>
+          <h2 className="titleMentale">- Recupero Mentale -</h2>
+
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/Q1w98wcXEOY"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/lOXj33nsjj4"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <iframe className="video"
+            width="300"
+            height="200"
+            src="https://www.youtube.com/embed/Pb79wFc9hXo"
+            title="YouTube video player"
+            frameBorder="10"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>)
+      }
+    </div>
   );
 };
 export default CountSleep
