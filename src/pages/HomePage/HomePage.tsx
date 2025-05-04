@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Papa from "papaparse";
+import React, { useState, useEffect } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import { Line } from "react-chartjs-2";
 import { Link } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./../../main";
+import { doc, getDoc } from "firebase/firestore";
+import {getAuth} from 'firebase/auth';
 import {
   ChartOptions,
   Chart as ChartJS,
@@ -52,40 +55,81 @@ const CountSleep: React.FC = () => {
     awake: 0,
   });
   const [hypnogramData, setHypnogramData] = useState<HypnogramChartData | null>(null);
+  const [collectionName, setCollectionName] = useState("");
+  const [data, setData] = useState<SleepStageData[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [userCollections, setUserCollections] = useState<string[]>([]);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchCsvData();
-  }, []);
+  const auth = getAuth();
+  const userId = auth.currentUser?.uid;
 
-  const fetchCsvData = () => {
-    const filePath = "/csv/sleep_data.csv";
-    fetch(filePath)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Errore HTTP: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then((csvText) => {
-        Papa.parse(csvText, {
-          header: true,
-          dynamicTyping: true,
-          skipEmptyLines: true,
-          complete: (result) => {
-            if (result.errors.length > 0) {
-              console.error("Errori di parsing CSV:", result.errors);
-              return;
-            }
-            const data = result.data as SleepStageData[];
-            countStages(data.map((item) => item["Sleep Stage"]));
-            processHypnogramData(data);
-          },
-        });
-      })
-      .catch((error) => {
-        console.error("Errore nel caricamento del file CSV:", error);
-      });
-  };
+const fetchDataFromFirestore = async () => {
+  if (!collectionName.trim()) {
+    alert("Inserisci il nome della raccolta.");
+    return;
+  }
+  try {
+    setLoading(true);
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    const fetchedData: SleepStageData[] = [];
+    querySnapshot.forEach((doc) => {
+      fetchedData.push(doc.data() as SleepStageData);
+    });
+
+    const sortedData = fetchedData.sort((a, b) => {
+      const dateA = new Date(a.Timestamp).getTime();
+      const dateB = new Date(b.Timestamp).getTime();
+      return dateA - dateB; 
+    });
+
+    setData(sortedData); 
+    countStages(sortedData.map((item) => item["Sleep Stage"]));
+    processHypnogramData(sortedData);
+  } catch (error) {
+    console.error("Errore nel recupero dei dati:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const fetchUserCollections = async () => {
+  if (!userId) {
+    alert("Devi essere autenticato.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const userDocRef = doc(db, "user_collections", userId); 
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userCollectionsData = userDoc.data().collections || [];
+      console.log("Raccolte dell'utente:", userCollectionsData); 
+      setUserCollections(userCollectionsData); 
+      localStorage.setItem('userCollections', JSON.stringify(userCollectionsData)); 
+    } else {
+      console.log("Documento non trovato per questo utente.");
+      setUserCollections([]); 
+    }
+  } catch (err) {
+    console.error("Errore nel recupero delle raccolte:", err);
+  } finally {
+    setLoading(false); 
+  }
+};
+
+useEffect(() => {
+  const storedCollections = localStorage.getItem('userCollections');
+  if (storedCollections) {
+    setUserCollections(JSON.parse(storedCollections)); 
+  }
+
+  if (userId) {
+    fetchUserCollections(); 
+  }
+}, [userId]); 
 
   const countStages = (stages: string[]) => {
     const stageCounts = { light: 0, deep: 0, rem: 0, awake: 0 };
@@ -289,6 +333,33 @@ const CountSleep: React.FC = () => {
 
       <div>
         <h1 className="title">MONITORAGGIO DEL SONNO</h1>
+        <div>
+      <h2 className="title6">LE TUE RACCOLTE</h2>
+      {loading && <p>Caricamento in corso...</p>}
+      {error && <p>Errore: {error}</p>}
+      <ul className="elenco">
+        {userCollections.length > 0 ? (
+          userCollections.slice(1).map((collectionName, index) => (
+            <li key={index}>{collectionName}</li> 
+          ))
+        ) : (
+          <p>Non hai raccolte.</p>
+        )}
+      </ul>
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Nome della raccolta"
+          value={collectionName}
+          onChange={(e) => setCollectionName(e.target.value)}
+          className="azzurro"
+        />
+        <button onClick={fetchDataFromFirestore} className="btn-azzurro">
+          Carica Dati
+        </button>
+      </div>
+      {loading && <p>Caricamento in corso...</p>}
         <div className="value">
             <li>
               <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#FF6600", marginRight: "5px" }}></span>

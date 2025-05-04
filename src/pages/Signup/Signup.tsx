@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc, arrayUnion } from 'firebase/firestore';
+import { db } from './../../main';
 import './Signup.css'; 
 
 const Signup = () => {
@@ -15,8 +17,15 @@ const Signup = () => {
     const signUpWithGoogle = async () => {
         setAuthing(true);
         signInWithPopup(auth, new GoogleAuthProvider())
-            .then(response => {
+            .then(async (response) => {
+                const userId = response.user.uid;
                 console.log(response.user.uid);
+                 // Aggiorna il documento 'user_collections' con l'ID dell'utente
+                 const userCollectionsRef = doc(db, 'user_collections', userId);
+                 await setDoc(userCollectionsRef, {
+                     collections: arrayUnion(userId),  // Aggiungi l'ID utente all'array
+                 }, { merge: true });
+
                 navigate('/');
             })
             .catch(error => {
@@ -35,8 +44,13 @@ const Signup = () => {
         setError('');
 
         createUserWithEmailAndPassword(auth, email, password)
-            .then(response => {
+            .then(async (response) => {
+                const userId = response.user.uid;
                 console.log(response.user.uid);
+                const userCollectionsRef = doc(db, 'user_collections', userId);
+                await setDoc(userCollectionsRef, {
+                    collections: arrayUnion(userId),  // Aggiungi l'ID utente all'array
+                }, { merge: true });
                 navigate('/');
             })
             .catch(error => {

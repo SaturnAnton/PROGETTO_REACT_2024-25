@@ -10,7 +10,9 @@ import AuthRoute from './AuthRoute.tsx'
 import SleepDetails from './pages/SleepDetails/SleepDetails.tsx'
 
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from "firebase/auth";
+import CsvUploader from './../src/pages/CsvUploader/CsvUploader.tsx'
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1-cdjBT_-TEjTLOyEgADlVrJusYG2iJc",
@@ -24,17 +26,20 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
+export const auth = getAuth(app);
+export { db };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Router>
       <Routes>
-      <Route path="/" element={<AuthRoute><App /></AuthRoute>} />
+      <Route path="/" element={<AuthRoute><CsvUploader /></AuthRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/sleepdet" element={<SleepDetails />} />
         <Route path="/tips" element={<Tips />} />
+        <Route path="/info" element={<App />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
