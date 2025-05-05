@@ -4,7 +4,7 @@ import { Line } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./../../main";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, arrayUnion, updateDoc } from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 import {
   ChartOptions,
@@ -18,6 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import "./HomePage.css";
+import Navbar from "../Navbar/Navbar";
 
 ChartJS.register(
   CategoryScale,
@@ -64,34 +65,75 @@ const CountSleep: React.FC = () => {
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
 
-const fetchDataFromFirestore = async () => {
-  if (!collectionName.trim()) {
-    alert("Inserisci il nome della raccolta.");
-    return;
-  }
-  try {
-    setLoading(true);
-    const querySnapshot = await getDocs(collection(db, collectionName));
-    const fetchedData: SleepStageData[] = [];
-    querySnapshot.forEach((doc) => {
-      fetchedData.push(doc.data() as SleepStageData);
-    });
+  const saveTrendToFirestore = async () => {
+    if (!userId) {
+      alert("Devi essere autenticato per salvare i dati.");
+      return;
+    }
+  
+    if (data.length === 0) {
+      alert("Nessun dato disponibile per il salvataggio.");
+      return;
+    }
+  
+    try {
+      // Ottieni l'ultima data
+      const lastDate = new Date(data[data.length - 1].Timestamp)
+        .toISOString()
+        .split("T")[0]; // Solo la data (YYYY-MM-DD)
+  
+      // Calcola il punteggio totale
+      const totalScore = calculateSleepRate().toFixed(2);
+  
+      // Riferimento al documento dell'utente nel database
+      const userTrendDocRef = doc(db, "trend", userId);
+  
+      // Aggiungi la nuova entry all'array esistente
+      await updateDoc(userTrendDocRef, {
+        data: arrayUnion({
+          date: lastDate,
+          score: totalScore,
+        }),
+      });
+  
+      alert("Trend salvato con successo!");
+    } catch (error) {
+      console.error("Errore durante il salvataggio del trend:", error);
+      alert("Errore durante il salvataggio.");
+    }
+  };
+  
 
-    const sortedData = fetchedData.sort((a, b) => {
-      const dateA = new Date(a.Timestamp).getTime();
-      const dateB = new Date(b.Timestamp).getTime();
-      return dateA - dateB; 
-    });
+  const fetchDataFromFirestore = async () => {
+    if (!collectionName.trim()) {
+      alert("Inserisci il nome della raccolta.");
+      return;
+    }
+    try {
+      setLoading(true);
+      const querySnapshot = await getDocs(collection(db, collectionName));
+      const fetchedData: SleepStageData[] = [];
+      querySnapshot.forEach((doc) => {
+        fetchedData.push(doc.data() as SleepStageData);
+      });
+  
+      const sortedData = fetchedData.sort((a, b) => {
+        const dateA = new Date(a.Timestamp).getTime();
+        const dateB = new Date(b.Timestamp).getTime();
+        return dateA - dateB; 
+      });
+  
+      setData(sortedData); 
+      countStages(sortedData.map((item) => item["Sleep Stage"]));
+      processHypnogramData(sortedData);
 
-    setData(sortedData); 
-    countStages(sortedData.map((item) => item["Sleep Stage"]));
-    processHypnogramData(sortedData);
-  } catch (error) {
-    console.error("Errore nel recupero dei dati:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (error) {
+      console.error("Errore nel recupero dei dati:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
 const fetchUserCollections = async () => {
   if (!userId) {
@@ -323,6 +365,7 @@ useEffect(() => {
   
   return (
     <div>
+      <Navbar />
       <div>
         <h1 className="title">MONITORAGGIO DEL SONNO</h1>
         <div>
@@ -352,6 +395,10 @@ useEffect(() => {
         </button>
       </div>
       {loading && <p>Caricamento in corso...</p>}
+      <button onClick={saveTrendToFirestore} className="btn-azzurro">
+        Salva Trend
+      </button>
+
         <div className="value">
             <li>
               <span style={{ display: "inline-block", width: "10px", height: "10px", backgroundColor: "#FF6600", marginRight: "5px" }}></span>

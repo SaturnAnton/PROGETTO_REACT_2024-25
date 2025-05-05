@@ -1,0 +1,14 @@
+.titolo{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.date {
+    border: 2px solid #60a5fa; 
+    color: antiquewhite; 
+    background-color: #60a5fa;
+    padding: 4px; 
+    border-radius: 5px;
+    border-color: antiquewhite;
+    margin-bottom: 15px;
+}

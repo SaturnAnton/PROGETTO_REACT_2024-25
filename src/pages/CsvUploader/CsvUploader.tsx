@@ -3,8 +3,8 @@ import { auth, db } from './../../main';
 import { collection, addDoc, doc, setDoc, arrayUnion} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import Papa from 'papaparse';
-import { Link } from "react-router-dom";
 import './CsvUploader.css'
+import Navbar from "../Navbar/Navbar";
 
 const CsvToFirestore: React.FC = () => {
   const [uploading, setUploading] = useState(false);
@@ -72,14 +72,14 @@ const CsvToFirestore: React.FC = () => {
 
   return (
     <div>
+      <Navbar />
       <h1 className='importo'>IMPORTA UN FILE CSV IN FIRESTORE</h1>
+      <div className='centro'>
       <input type="file" accept=".csv" onChange={handleFileUpload} disabled={!userId} />
       {!userId && <p>Autenticati per importare i dati.</p>}
       {uploading && <p>Importazione in corso...</p>}
       {message && <p>{message}</p>}
-      <Link to='/info'>
-          <h2 className="title4">ANALIZZA I TUOI DATI</h2>
-      </Link>
+      </div>
     </div>
   );
 };

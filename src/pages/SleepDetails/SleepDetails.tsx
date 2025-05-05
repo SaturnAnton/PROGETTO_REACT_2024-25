@@ -24,7 +24,7 @@ function SleepDetails(){
                 è migliore quando non si passa troppo tempo svegli. Una fase di sonno pari o superiore al 90% della 
                 durata totale del sonno fa aumentare il punteggio sul sonno.
             </div>
-            <Link to='/info' className="no-det">
+            <Link to='/analizza' className="no-det">
                 <h1 className="title4">Back</h1>
             </Link>
         </div>

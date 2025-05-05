@@ -61,7 +61,7 @@ function Tips(){
                     <li>Espira lentamente per 6 secondi.</li>
                 </ul>
             </div>
-            <Link to='/info' className="no-det">
+            <Link to='/analizza' className="no-det">
                 <h1 className="title4">Back</h1>
             </Link>
         </div>
