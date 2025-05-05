@@ -324,14 +324,6 @@ useEffect(() => {
   return (
     <div>
       <div>
-      {/* Musica di sottofondo */}
-      <audio id="spotifydown.com - As we are (Seungmin)" autoPlay loop>
-        <source src="\public\spotifydown.com - As we are (Seungmin).mp3" type="audio/mp3" />
-        Il tuo browser non supporta l'elemento audio.
-      </audio>
-    </div>
-
-      <div>
         <h1 className="title">MONITORAGGIO DEL SONNO</h1>
         <div>
       <h2 className="title6">LE TUE RACCOLTE</h2>
