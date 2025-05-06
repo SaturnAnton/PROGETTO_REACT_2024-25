@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import { Line } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./../../main";
-import { doc, getDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc,getDoc, setDoc } from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 import {
   ChartOptions,
@@ -59,50 +59,68 @@ const CountSleep: React.FC = () => {
   const [collectionName, setCollectionName] = useState("");
   const [data, setData] = useState<SleepStageData[]>([]);
   const [loading, setLoading] = useState(false);
-  const [userCollections, setUserCollections] = useState<string[]>([]);
-  const [error, setError] = useState(null);
 
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
 
-  const saveTrendToFirestore = async () => {
+const saveTrendToFirestore = async () => {
+  try {
     if (!userId) {
       alert("Devi essere autenticato per salvare i dati.");
       return;
     }
-  
-    if (data.length === 0) {
+
+    if (!data || data.length === 0) {
       alert("Nessun dato disponibile per il salvataggio.");
       return;
     }
-  
-    try {
-      // Ottieni l'ultima data
-      const lastDate = new Date(data[data.length - 1].Timestamp)
-        .toISOString()
-        .split("T")[0]; // Solo la data (YYYY-MM-DD)
-  
-      // Calcola il punteggio totale
-      const totalScore = calculateSleepRate().toFixed(2);
-  
-      // Riferimento al documento dell'utente nel database
-      const userTrendDocRef = doc(db, "trend", userId);
-  
-      // Aggiungi la nuova entry all'array esistente
+
+    const totalScore = calculateSleepRate();
+    if (typeof totalScore !== "number" || isNaN(totalScore)) {
+      alert("Errore nel calcolo del punteggio. Riprova.");
+      return;
+    }
+
+    const lastDate = new Date(data[data.length - 1]?.Timestamp)
+      .toISOString()
+      .split("T")[0];
+
+    if (!lastDate) {
+      alert("Errore nell'elaborazione della data. Verifica i dati.");
+      return;
+    }
+
+    const userTrendDocRef = doc(db, "trend", userId);
+
+    const docSnapshot = await getDoc(userTrendDocRef);
+
+    if (!docSnapshot.exists()) {
+      // Crea il documento se non esiste
+      await setDoc(userTrendDocRef, {
+        data: [
+          {
+            date: lastDate,
+            score: totalScore.toFixed(2),
+          },
+        ],
+      });
+      alert("Trend creato con successo!");
+    } else {
+      // Aggiorna il documento se esiste
       await updateDoc(userTrendDocRef, {
         data: arrayUnion({
           date: lastDate,
-          score: totalScore,
+          score: totalScore.toFixed(2),
         }),
       });
-  
-      alert("Trend salvato con successo!");
-    } catch (error) {
-      console.error("Errore durante il salvataggio del trend:", error);
-      alert("Errore durante il salvataggio.");
+      alert("Trend aggiornato con successo!");
     }
-  };
-  
+  } catch (error) {
+    console.error("Errore durante il salvataggio:", error);
+    alert("Errore durante l'aggiornamento. Controlla i dettagli nella console.");
+  }
+};
+
 
   const fetchDataFromFirestore = async () => {
     if (!collectionName.trim()) {
@@ -133,45 +151,6 @@ const CountSleep: React.FC = () => {
       setLoading(false);
     }
   };
-  
-
-const fetchUserCollections = async () => {
-  if (!userId) {
-    alert("Devi essere autenticato.");
-    return;
-  }
-
-  try {
-    setLoading(true);
-    const userDocRef = doc(db, "user_collections", userId); 
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const userCollectionsData = userDoc.data().collections || [];
-      console.log("Raccolte dell'utente:", userCollectionsData); 
-      setUserCollections(userCollectionsData); 
-      localStorage.setItem('userCollections', JSON.stringify(userCollectionsData)); 
-    } else {
-      console.log("Documento non trovato per questo utente.");
-      setUserCollections([]); 
-    }
-  } catch (err) {
-    console.error("Errore nel recupero delle raccolte:", err);
-  } finally {
-    setLoading(false); 
-  }
-};
-
-useEffect(() => {
-  const storedCollections = localStorage.getItem('userCollections');
-  if (storedCollections) {
-    setUserCollections(JSON.parse(storedCollections)); 
-  }
-
-  if (userId) {
-    fetchUserCollections(); 
-  }
-}, [userId]); 
 
   const countStages = (stages: string[]) => {
     const stageCounts = { light: 0, deep: 0, rem: 0, awake: 0 };
@@ -368,20 +347,9 @@ useEffect(() => {
       <Navbar />
       <div>
         <h1 className="title">MONITORAGGIO DEL SONNO</h1>
-        <div>
-      <h2 className="title6">LE TUE RACCOLTE</h2>
-      {loading && <p>Caricamento in corso...</p>}
-      {error && <p>Errore: {error}</p>}
-      <ul className="elenco">
-        {userCollections.length > 0 ? (
-          userCollections.slice(1).map((collectionName, index) => (
-            <li key={index}>{collectionName}</li> 
-          ))
-        ) : (
-          <p>Non hai raccolte.</p>
-        )}
-      </ul>
-      </div>
+      <Link to='/raccolte' className="no-det">
+          <h2 className="title4">Seleziona qui la raccolta desiderata</h2>
+      </Link>
       <div>
         <input
           type="text"

@@ -14,6 +14,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from "firebase/auth";
 import CsvUploader from './../src/pages/CsvUploader/CsvUploader.tsx'
 import Trending from './pages/Trend/Trend.tsx'
+import Raccolte from './Raccolte/Raccolte.tsx'
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1-cdjBT_-TEjTLOyEgADlVrJusYG2iJc",
@@ -42,6 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/tips" element={<Tips />} />
         <Route path="/analizza" element={<App />} />
         <Route path="/trending" element={<Trending />} />
+        <Route path="/raccolte" element={<Raccolte />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
