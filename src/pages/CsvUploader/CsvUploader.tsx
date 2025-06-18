@@ -73,7 +73,7 @@ const CsvToFirestore: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <h1 className='importo'>IMPORTA UN FILE CSV IN FIRESTORE</h1>
+      <h1 className='importo'>IMPORTA UN FILE CSV</h1>
       <div className='centro'>
       <input type="file" accept=".csv" onChange={handleFileUpload} disabled={!userId} />
       {!userId && <p>Autenticati per importare i dati.</p>}
